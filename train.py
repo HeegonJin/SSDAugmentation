@@ -8,12 +8,11 @@ import os
 import torch
 import torchvision
 import sys
-from XMLloader import XMLloader
 import voc0712
 from voc0712 import VOCDetection
 from voc0712 import VOCAnnotationTransfrom
-from augmentation import SSDAugmentation
-
+from myaug import SSDAugmentation
+from torchvision import transforms
 def detection_collate(batch):
     """Custom collate fn for dealing with batches of images that have a different
     number of associated object annotations (bounding boxes).
@@ -43,4 +42,5 @@ data_loader = torch.utils.data.DataLoader(dataset=dataset,
 
 batch_iterator = iter(data_loader)
 images, targets = next(batch_iterator)
-print(images, targets)
+img = transforms.ToPILImage()(images[0])
+img.show()

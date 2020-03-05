@@ -4,7 +4,7 @@ import torch
 from PIL import Image
 import xml.etree.ElementTree as ET
 import collections
-from augmentation import SSDAugmentation
+from myaug import SSDAugmentation
 import cv2
     
 VOC_CLASSES = (  # always index 0
@@ -121,6 +121,7 @@ class VOCDetection(object):
 
         if self.transforms is not None:
             img, boxes, labels = self.transforms(img, target[:, :4], target[:, 4])
+            
             img = img[:, :, (2, 1, 0)]
             target = np.hstack((boxes, np.expand_dims(labels, axis=1)))
         return torch.from_numpy(img).permute(2, 0, 1), target

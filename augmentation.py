@@ -1,5 +1,4 @@
 import torch
-from torchvision import transforms
 import cv2
 import numpy as np
 import types
@@ -68,7 +67,6 @@ class ConvertFromInts(object):
     def __call__(self, image, boxes=None, labels=None):
         return image.astype(np.float32), boxes, labels
 
-
 class SubtractMeans(object):
     def __init__(self, mean):
         self.mean = np.array(mean, dtype=np.float32)
@@ -111,7 +109,7 @@ class Resize(object):
         return image, boxes, labels
 
 
-class RandomSaturation(object):
+class RandomSaturation(object): # HSV형태라고 가정
     def __init__(self, lower=0.5, upper=1.5):
         self.lower = lower
         self.upper = upper
@@ -125,7 +123,7 @@ class RandomSaturation(object):
         return image, boxes, labels
 
 
-class RandomHue(object):
+class RandomHue(object): # H 값은 0°~360°의 범위
     def __init__(self, delta=18.0):
         assert delta >= 0.0 and delta <= 360.0
         self.delta = delta
@@ -219,17 +217,17 @@ class RandomSampleCrop(object):
             labels (Tensor): the class labels for each bbox
     """
     def __init__(self):
-        self.sample_options = (
-            # using entire original input image
-            None,
-            # sample a patch s.t. MIN jaccard w/ obj in .1,.3,.4,.7,.9
-            (0.1, None),
-            (0.3, None),
-            (0.7, None),
-            (0.9, None),
-            # randomly sample a patch
-            (None, None),
-        )
+            self.sample_options = (
+                # using entire original input image
+                None,
+                # sample a patch s.t. MIN jaccard w/ obj in .1,.3,.4,.7,.9
+                (0.1, None),
+                (0.3, None),
+                (0.7, None),
+                (0.9, None),
+                # randomly sample a patch
+                (None, None),
+            )
 
     def __call__(self, image, boxes=None, labels=None):
         height, width, _ = image.shape
@@ -330,8 +328,8 @@ class Expand(object):
                      int(left):int(left + width)] = image
         image = expand_image
 
-        boxes = boxes.copy()
-        boxes[:, :2] += (int(left), int(top))
+        boxes = boxes.copy() # (xmin, ymin) (xmax, ymax)
+        boxes[:, :2] += (int(left), int(top)) #넘파이 배열은 튜플로 덧셈 가능
         boxes[:, 2:] += (int(left), int(top))
 
         return image, boxes, labels
@@ -395,6 +393,11 @@ class PhotometricDistort(object):
             distort = Compose(self.pd[1:])
         im, boxes, labels = distort(im, boxes, labels)
         return self.rand_light_noise(im, boxes, labels)
+
+
+
+
+
 
 
 class SSDAugmentation(object):
