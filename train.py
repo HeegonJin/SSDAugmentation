@@ -9,8 +9,7 @@ import torch
 import torchvision
 import sys
 import voc0712
-from voc0712 import VOCDetection
-from voc0712 import VOCAnnotationTransfrom
+from myvoc import VOCDetection
 from myaug import SSDAugmentation
 from torchvision import transforms
 def detection_collate(batch):
@@ -30,17 +29,16 @@ def detection_collate(batch):
         imgs.append(sample[0])
         targets.append(torch.FloatTensor(sample[1]))
     return torch.stack(imgs, 0), targets
-DATAROOT = "c:/users/user/data"
-VOCROOT = os.path.join(DATAROOT, "VOCdevkit", "VOC2007")
-ANNOROOT = os.path.join(DATAROOT, "VOCdevkit", "VOC2007", "Annotations","000001.xml")
 
 
-dataset = VOCDetection(VOCROOT,transforms = SSDAugmentation())
+DATAROOT = "c:/users/user/data/VOCDevkit"
+dataset = VOCDetection(DATAROOT, transform = SSDAugmentation())
 data_loader = torch.utils.data.DataLoader(dataset=dataset,
                                            batch_size=32, shuffle=True, collate_fn=detection_collate,
                                   pin_memory=True)
 
 batch_iterator = iter(data_loader)
 images, targets = next(batch_iterator)
+print(images,targets)
 img = transforms.ToPILImage()(images[0])
 img.show()

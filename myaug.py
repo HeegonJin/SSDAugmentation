@@ -334,15 +334,15 @@ class SSDAugmentation(object):
         self.mean = mean
         self.size = size
         self.augment = Compose([
-            #ConvertFromInts(),
-            #ToAbsoluteCoords(),
-            #PhotometricDistort(),
-            #Expand(self.mean),
-            #RandomSampleCrop(),
-            #RandomMirror(),
-            #ToPercentCoords(),
+            ConvertFromInts(),
+            ToAbsoluteCoords(),
+            PhotometricDistort(),
+            Expand(self.mean),
+            RandomSampleCrop(),
+            RandomMirror(),
+            ToPercentCoords(),
             Resize(self.size),
-            #SubtractMeans(self.mean)
+            SubtractMeans(self.mean)
         ])
 
     def __call__(self, img, boxes, labels):
