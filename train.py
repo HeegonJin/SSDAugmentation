@@ -39,6 +39,6 @@ data_loader = torch.utils.data.DataLoader(dataset=dataset,
 
 batch_iterator = iter(data_loader)
 images, targets = next(batch_iterator)
-print(images,targets)
-img = transforms.ToPILImage()(images[0])
-img.show()
+#(images[0].shape,targets[0].shape)
+# img = transforms.ToPILImage()(images[0])
+# img.show()

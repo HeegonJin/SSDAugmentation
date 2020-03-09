@@ -64,7 +64,7 @@
 # class VOCDetection(object):
 
 #     def __init__(self, root, image_sets = [('2007', 'trainval'), ('2012', 'trainval')],
-#              transform = None, target_transform = VOCAnnotationTransform()):
+#               transform = None, target_transform = VOCAnnotationTransform()):
 #         self.root = root # DATAROOT = "c:/users/user/data"
 #         self.image_sets = image_sets
 #         self.transform = transform

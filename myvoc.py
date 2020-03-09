@@ -44,18 +44,18 @@ class VOCAnnotationTransform(object):
         root = target.getroot()
         res = []
         label = -1
-        for obj in root.iter('object'):
+        for obj in root.iter('object'):#can be one or multiple objects 
                 
             name = obj.find('name').text
             label = self.class_to_ind[name]
             
             
-            for bbox in obj.iter("bndbox"):
-                bndbox = ['xmin','ymin','xmax','ymax']
-                bndbox[0] = int(float(bbox.find(bndbox[0]).text)) / width
-                bndbox[1] = int(float(bbox.find(bndbox[1]).text)) / height
-                bndbox[2] = int(float(bbox.find(bndbox[2]).text)) / width
-                bndbox[3] = int(float(bbox.find(bndbox[3]).text)) / height
+            bbox = obj.find('bndbox') #fixed: only one bbox for one object
+            bndbox = ['xmin','ymin','xmax','ymax']
+            bndbox[0] = int((bbox.find(bndbox[0]).text)) / width
+            bndbox[1] = int((bbox.find(bndbox[1]).text)) / height
+            bndbox[2] = int((bbox.find(bndbox[2]).text)) / width
+            bndbox[3] = int((bbox.find(bndbox[3]).text)) / height
             bndbox.append(label)
             res += [bndbox]
         #print(res)
@@ -105,7 +105,7 @@ class VOCDetection(object):
         target = np.array(target)
         if self.transform is not None:
             image, boxes, labels = self.transform(image, target[:,:4], target[:, 4])
-        image = image[:,:,(2,1,0)]
+        image = image[:,:,(2,1,0)] #rgb to bgr
         targets = np.hstack((boxes, np.expand_dims(labels, axis = 1)))
         return torch.from_numpy(image).permute(2,0,1), targets, height, width
        

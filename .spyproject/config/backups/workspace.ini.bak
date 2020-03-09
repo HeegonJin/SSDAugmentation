@@ -6,5 +6,5 @@ save_non_project_files = False
 
 [main]
 version = 0.2.0
-recent_files = ['voc0712.py', 'myaug.py', 'augmentation.py', 'train.py', 'myvoc.py', '..\\Anaconda3\\lib\\xml\\etree\\ElementPath.py']
+recent_files = ['train.py', 'myvoc.py', 'myaug.py', 'voc0712.py']
 
